@@ -1,0 +1,116 @@
+.savings-container {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.savings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.savings-header h1 {
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.update-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.total-savings-section {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.total-savings-section .label {
+  color: var(--secondary-text);
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.total-amount {
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  padding: 16px;
+}
+
+.icon-bg {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--secondary-text);
+}
+
+.goals-section h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.goal-card {
+  margin-bottom: 12px;
+  padding: 16px 20px;
+}
+
+.goal-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.goal-name {
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.goal-progress-text {
+  color: var(--secondary-text);
+  font-size: 14px;
+}
+
+.progress-bar-container {
+  height: 12px;
+  background-color: #f2f2f6;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease-out;
+}
