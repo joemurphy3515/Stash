@@ -1,0 +1,85 @@
+.monthly-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #6a82ff, #c669ff);
+  border-radius: 24px;
+  padding: 24px;
+  color: white;
+  box-shadow: 0 10px 20px rgba(157, 82, 255, 0.2);
+  margin-bottom: 32px;
+}
+
+.hero-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin: 0 0 8px 0;
+}
+
+.hero-amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+}
+
+.progress-container {
+  background: rgba(255, 255, 255, 0.2);
+  height: 8px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: white;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.hero-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.category-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow);
+}
+
+.category-icon {
+  font-size: 1.2rem;
+}
+
+.category-label {
+  color: var(--secondary-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.category-amount {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
