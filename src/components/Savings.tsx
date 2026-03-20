@@ -1,6 +1,8 @@
+import { useState } from "react";
+import { SavingsForm } from "../components/SavingsForm";
 import "../styles/savings.css";
 
-const goals = [
+const initialGoals = [
   { name: "Business", current: 500, total: 2000, color: "#f09246" },
   { name: "Joint", current: 500, total: 10000, color: "#9d52ff" },
   { name: "Personal", current: 4700, total: 20000, color: "#007aff" },
@@ -8,11 +10,19 @@ const goals = [
 ];
 
 export const Savings = () => {
+  const [showForm, setShowForm] = useState(false);
+
+  if (showForm) {
+    return <SavingsForm onCancel={() => setShowForm(false)} />;
+  }
+
   return (
     <div className="savings-container">
       <header className="savings-header">
         <h1>Savings</h1>
-        <button className="update-btn">Update</button>
+        <button className="update-btn" onClick={() => setShowForm(true)}>
+          Update
+        </button>
       </header>
 
       <div className="total-savings-section">
@@ -39,7 +49,7 @@ export const Savings = () => {
 
       <section className="goals-section">
         <h3>Goals</h3>
-        {goals.map((goal) => (
+        {initialGoals.map((goal) => (
           <div key={goal.name} className="savings-card goal-card">
             <div className="goal-info">
               <span className="goal-name">{goal.name}</span>
