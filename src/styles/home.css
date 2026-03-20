@@ -16,14 +16,6 @@ body {
   color: var(--primary-text);
 }
 
-.card {
-  background: var(--card-bg);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
-  margin-bottom: 16px;
-}
-
 .top-toolbar {
   position: fixed;
   top: 0;

@@ -21,14 +21,14 @@ export const Savings = () => {
       </div>
 
       <div className="stats-grid">
-        <div className="card stat-card">
+        <div className="savings-card stat-card">
           <span className="icon-bg house">🏠</span>
           <div className="stat-content">
             <span className="stat-value">$0</span>
             <span className="stat-label">Saved This Month</span>
           </div>
         </div>
-        <div className="card stat-card">
+        <div className="savings-card stat-card">
           <span className="icon-bg chart">📈</span>
           <div className="stat-content">
             <span className="stat-value">$0</span>
@@ -40,7 +40,7 @@ export const Savings = () => {
       <section className="goals-section">
         <h3>Goals</h3>
         {goals.map((goal) => (
-          <div key={goal.name} className="card goal-card">
+          <div key={goal.name} className="savings-card goal-card">
             <div className="goal-info">
               <span className="goal-name">{goal.name}</span>
               <span className="goal-progress-text">

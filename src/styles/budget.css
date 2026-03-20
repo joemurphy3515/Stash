@@ -1,0 +1,159 @@
+.budget-container,
+.month-view {
+  max-width: 500px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+
+.year-switcher {
+  background: #e5e5ea;
+  padding: 4px;
+  border-radius: 12px;
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.year-switcher button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.year-switcher button.active {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.month-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.budget-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+
+.month-label {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.calendar-icon {
+  margin-right: 12px;
+  background: #f2f2f6;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.month-amount {
+  font-weight: 700;
+  color: #000;
+}
+
+.chevron {
+  margin-left: 10px;
+  color: #c7c7cc;
+  font-size: 20px;
+}
+
+.filter-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 0 20px 0;
+  scrollbar-width: none;
+}
+
+.filter-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-pill {
+   font-family: "Montserrat";
+  white-space: nowrap;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 1px solid #e5e5ea;
+  background: white;
+  font-weight: 500;
+}
+
+.filter-pill.active {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+.stats-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr; 
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.hero-black,
+.hero-green {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 20px !important; 
+  border-radius: 24px;
+}
+
+.hero-black {
+  background: #000000;
+  color: #ffffff;
+}
+
+.hero-green {
+  background: #34c759; 
+  color: #ffffff;
+}
+
+.hero-black p,
+.hero-green p {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.hero-black h3,
+.hero-green h3 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.back-btn {
+  background: #e5e5ea;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding-bottom: 4px; 
+}
+
+.back-btn:active {
+  background: #d1d1d6;
+}

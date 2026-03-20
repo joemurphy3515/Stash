@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MonthlyReview } from "./MonthlyReview";
 import { Savings } from "./Savings";
-import { Transactions } from "./Transactions";
+import { Budget } from "./Budget";
 import "../styles/home.css";
 
 const Home = () => {
@@ -47,7 +47,7 @@ const Home = () => {
         <main className="view-content">
           {activeTab === "monthly" && <MonthlyReview />}
           {activeTab === "savings" && <Savings />}
-          {activeTab === "budget" && <Transactions />}
+          {activeTab === "budget" && <Budget />}
         </main>
       </div>
     </div>
