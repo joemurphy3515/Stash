@@ -1,73 +1,25 @@
-# React + TypeScript + Vite
+# Stash | Personal Finance for Founders
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Stash** is a high-performance spending and budget tracker designed to solve the persistent failures of mainstream finance apps. By leveraging AI integrations, Stash eliminates the frustration of incorrect categorization and replaces cluttered legacy interfaces with a clean, iOS-inspired experience.
 
-Currently, two official plugins are available:
+## 🚀 The Stash Difference
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Unlike major financial apps, Stash is built to actually work:
+* **AI-Powered Categorization:** No more manual overrides. Our integration ensures transactions land where they belong the first time.
+* **Founder-Centric UI:** A streamlined, high-contrast dashboard designed for multidisciplinary experts who need insights at a glance.
+* **Precision Budgeting:** Real-time tracking that solves the "lag" and "hidden fees" issues common in other platforms.
 
-## React Compiler
+## 🛠 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Framework:** React 18+
+* **Language:** TypeScript
+* **Bundler:** Vite
+* **Styling:** Pure CSS (Custom Root Variables & iOS-Standard Hex Codes)
 
-## Expanding the ESLint configuration
+## 📁 Component Architecture
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* **Home.tsx**: Executive dashboard with spending vs. remaining progress metrics.
+* **Budget.tsx**: 3-year multi-view controller for high-level and granular analysis.
+* **Savings.tsx**: Milestone-driven goal tracking with visual progress indicators.
+* **MonthView.tsx**: Deep-dive monthly breakdown with seamless horizontal category filtering.
+* **Transactions.tsx**: A reusable, AI-ready transaction list component.
