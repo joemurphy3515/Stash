@@ -1,12 +1,6 @@
 import { useState } from "react";
 import "../styles/savings.css";
 
-interface GoalInput {
-  current: number;
-  target: number;
-  color: string;
-}
-
 export const SavingsForm = ({ onCancel }: { onCancel: () => void }) => {
   const [goals, setGoals] = useState({
     personal: { current: 4700, target: 20000, color: "#007aff" },
@@ -28,49 +22,53 @@ export const SavingsForm = ({ onCancel }: { onCancel: () => void }) => {
   };
 
   return (
-    <div className="savings-form-container">
+    <div className="savings-form-container compact">
       <header className="form-header">
-        <h1>Update Savings</h1>
+        <h1>Update Goals</h1>
         <button className="cancel-btn" onClick={onCancel}>
           Cancel
         </button>
       </header>
 
-      <div className="form-scroll-area">
+      <div className="form-grid-area">
         {Object.entries(goals).map(([key, data]) => (
-          <section key={key} className="form-group">
-            <h2 className="group-title">
-              {key.charAt(0).toUpperCase() + key.slice(1)} Savings
+          <section key={key} className="form-group-compact">
+            <h2 className="group-title-small">
+              {key.charAt(0).toUpperCase() + key.slice(1)}
             </h2>
-
-            <div className="input-field">
-              <label>Current Amount</label>
-              <div className="input-wrapper">
-                <span style={{ color: data.color }}>$</span>
-                <input
-                  type="number"
-                  value={data.current}
-                  onChange={(e) => handleUpdate(key, "current", e.target.value)}
-                />
+            <div className="input-row">
+              <div className="mini-input">
+                <label>Current</label>
+                <div className="input-wrapper-sm">
+                  <span style={{ color: data.color }}>$</span>
+                  <input
+                    type="number"
+                    value={data.current}
+                    onChange={(e) =>
+                      handleUpdate(key, "current", e.target.value)
+                    }
+                  />
+                </div>
               </div>
-            </div>
-
-            <div className="input-field">
-              <label>Target Goal</label>
-              <div className="input-wrapper">
-                <span style={{ color: data.color }}>$</span>
-                <input
-                  type="number"
-                  value={data.target}
-                  onChange={(e) => handleUpdate(key, "target", e.target.value)}
-                />
+              <div className="mini-input">
+                <label>Target</label>
+                <div className="input-wrapper-sm">
+                  <span style={{ color: data.color }}>$</span>
+                  <input
+                    type="number"
+                    value={data.target}
+                    onChange={(e) =>
+                      handleUpdate(key, "target", e.target.value)
+                    }
+                  />
+                </div>
               </div>
             </div>
           </section>
         ))}
       </div>
 
-      <button className="save-changes-btn">Save Changes</button>
+      <button className="save-changes-btn-compact">Save Changes</button>
     </div>
   );
 };
