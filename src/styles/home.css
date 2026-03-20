@@ -38,6 +38,13 @@ body {
   padding: 0 40px;
 }
 
+.toolbar-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
 .logo-text {
   font-weight: 800;
   font-size: 1.2rem;
@@ -54,6 +61,18 @@ body {
   justify-content: center;
   font-weight: 700;
   font-size: 0.8rem;
+}
+
+.logout-btn {
+  font-family: "Montserrat", sans-serif;
+  background: black;
+  padding: 8px 16px;
+  border-radius: 7px;
+  border: none;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .home-container {
