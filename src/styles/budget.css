@@ -11,14 +11,18 @@
   padding: 4px;
   border-radius: 12px;
   display: flex;
-  margin-bottom: 30px;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 auto 30px auto;
+  width: fit-content;
 }
 
 .year-switcher button {
-  flex: 1;
+  flex: 0 0 auto;
+  min-width: 68px;
   border: none;
   background: transparent;
-  padding: 8px;
+  padding: 8px 14px;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
