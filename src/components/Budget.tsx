@@ -66,24 +66,31 @@ export const Budget = () => {
       <div className="overview-list">
         <h3 className="overview-title">{selectedYear} Overview</h3>
 
-        <div className="months-scroll-area">
+        <div className="months-grid">
           {fullYearData.map((item) => (
             <div
               key={item.month}
-              className="budget-card month-row"
+              className="budget-card month-card"
               onClick={() => setActiveMonth(item.month)}
             >
-              <div className="month-label">
+              <div className="month-card-left">
                 <span className="calendar-icon">🗓️</span>
-                {item.month}
+
+                <div className="month-card-content">
+                  <div className="month-card-name">
+                    {item.month.replace(` ${selectedYear}`, "")}
+                  </div>
+
+                  <div className="month-card-amount">
+                    $
+                    {item.total.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </div>
+                </div>
               </div>
-              <div className="month-amount">
-                $
-                {item.total.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-                <span className="chevron">›</span>
-              </div>
+
+              <span className="chevron">›</span>
             </div>
           ))}
         </div>
