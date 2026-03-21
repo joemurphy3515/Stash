@@ -58,7 +58,7 @@ export const importTransactions = async (file: File): Promise<void> => {
                                     date: row[0],
                                     description: cleanDescription,
                                     amount: parsedAmount,
-                                    category: row[3] || "Uncategorized",
+                                    category: row[3] ? String(row[3]).trim() : "Uncategorized",
                                     dateAdded: serverTimestamp(),
                                 });
                             }
@@ -76,15 +76,35 @@ export const importTransactions = async (file: File): Promise<void> => {
     });
 };
 
-export const deleteAllTransactions = async (): Promise<void> => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const q = query(collection(db, "transactions"), where("userId", "==", user.uid));
+export const deleteMonthTransactions = async (userId: string, targetMonthYear: string): Promise<void> => {
+    const txnsRef = collection(db, "transactions");
+    const q = query(txnsRef, where("userId", "==", userId));
     const snapshot = await getDocs(q);
 
     const batch = writeBatch(db);
-    snapshot.docs.forEach((d) => batch.delete(d.ref));
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    snapshot.docs.forEach((d) => {
+        const data = d.data();
+        const dateStr = data.date;
+
+        if (dateStr) {
+            const parts = dateStr.split('/');
+            if (parts.length === 3) {
+                const mIndex = parseInt(parts[0]) - 1;
+                const yStr = parts[2].length === 2 ? `20${parts[2]}` : parts[2];
+                const tMonthFull = `${monthNames[mIndex]} ${yStr}`;
+
+                if (tMonthFull === targetMonthYear) {
+                    batch.delete(d.ref);
+                }
+            }
+        }
+    });
+
     await batch.commit();
 };
 
