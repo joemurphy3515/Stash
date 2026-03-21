@@ -124,7 +124,7 @@ export const SavingsForm = ({ onCancel }: { onCancel: () => void }) => {
   return (
     <div className="savings-form-container compact">
       <header className="form-header">
-        <h1>Update Goals</h1>
+        <h1 className='form-title'>Update Savings</h1>
         <button className="cancel-btn" onClick={onCancel} disabled={isSaving}>
           Cancel
         </button>

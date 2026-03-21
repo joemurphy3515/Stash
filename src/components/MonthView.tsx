@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Transactions } from "./Transactions";
+import "../styles/month_view.css";
 
 export const MonthView = ({
   monthName,
@@ -21,17 +22,18 @@ export const MonthView = ({
   ];
 
   return (
-    <div className="month-view">
-      <button className="back-btn" onClick={onBack}>
+    <div className="mv-container">
+      <button className="mv-back-btn" onClick={onBack}>
         ‹
       </button>
-      <h2 style={{ fontSize: "32px", margin: "20px 0" }}>{monthName}</h2>
 
-      <div className="filter-scroll">
+      <h2 className="mv-title">{monthName}</h2>
+
+      <div className="mv-filter-scroll">
         {categories.map((cat) => (
           <button
             key={cat}
-            className={`filter-pill ${cat === activeTab ? "active" : ""}`}
+            className={`mv-filter-pill ${cat === activeTab ? "active" : ""}`}
             onClick={() => setActiveTab(cat)}
           >
             {cat}
@@ -39,18 +41,19 @@ export const MonthView = ({
         ))}
       </div>
 
-      <div className="stats-hero-grid">
-        <div className="card hero-black">
+      <div className="mv-hero-grid">
+        <div className="mv-card mv-hero-black">
           <p>Total Spent</p>
           <h3>$6,276.69</h3>
         </div>
-        <div className="card hero-green">
+        <div className="mv-card mv-hero-green">
           <p>Total Earned</p>
           <h3>$5,998.36</h3>
         </div>
       </div>
 
-      <h3 style={{ margin: "24px 0 16px" }}>Category Breakdown</h3>
+      <h3 className="mv-section-title">Category Breakdown</h3>
+
       <Transactions filterCategory={activeTab} />
     </div>
   );

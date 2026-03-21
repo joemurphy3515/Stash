@@ -17,12 +17,18 @@
   text-align: center;
 }
 
+.app-icon-login {
+  height: 60px;
+  width: 60px;
+  margin: 0 0 5px 0;
+}
+
 .login-title {
   font-size: 40px;
   font-weight: 800;
   letter-spacing: -1px;
-  color: var(--primary-text);
-  margin-bottom: 8px;
+  color: var(--custom-green);
+  margin: 0;
 }
 
 .login-subtitle {

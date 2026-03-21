@@ -23,6 +23,13 @@ const Home = ({ user }: HomeProps) => {
     }
   };
 
+  const getGreeting = (): string => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning"; 
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening"; 
+  };
+
   const firstName = user.displayName?.split(" ")[0] || "User";
   const initials = user.displayName
     ? user.displayName
@@ -47,7 +54,9 @@ const Home = ({ user }: HomeProps) => {
 
       <div className="home-container">
         <header className="home-header">
-          <p className="greeting">Good Afternoon, {firstName}</p>
+          <p className="greeting">
+            {getGreeting()}, {firstName}
+          </p>
 
           <nav className="tab-navigation">
             <button

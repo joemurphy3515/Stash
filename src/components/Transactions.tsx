@@ -1,4 +1,4 @@
-import "../styles/budget.css";
+import "../styles/month_view.css";
 
 interface Transaction {
   id: string;

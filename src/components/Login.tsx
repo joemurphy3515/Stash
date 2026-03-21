@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../styles/login.css";
 import { authService } from "../services/AuthService";
+import appIcon from "../assets/stash-web-icon.avif"
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,6 +30,7 @@ export const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
+        <img className="app-icon-login" src={appIcon} alt="App Icon" />
         <h1 className="login-title">Stash</h1>
         <p className="login-subtitle">Spending & Budget Tracker</p>
 
@@ -59,7 +61,7 @@ export const Login = () => {
             className="login-button"
             disabled={isSubmitting}
           >
-           Login
+            Login
           </button>
         </form>
       </div>

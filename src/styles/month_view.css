@@ -1,0 +1,152 @@
+/* Container */
+.mv-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 0 0 100px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.mv-title {
+  font-size: 32px;
+  margin: 20px 0;
+}
+
+/* Back button */
+.mv-back-btn {
+  background: #e5e5ea;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* Filters */
+.mv-filter-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 0 20px 0;
+  scrollbar-width: none;
+}
+
+.mv-filter-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.mv-filter-pill {
+  font-family: "Montserrat";
+  white-space: nowrap;
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: 1px solid #e5e5ea;
+  background: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.mv-filter-pill.active {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+/* Hero cards */
+.mv-hero-grid {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.mv-card {
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.mv-hero-black {
+  background: #000;
+  color: #fff;
+}
+
+.mv-hero-green {
+  background: #34c759;
+  color: #fff;
+}
+
+.mv-hero-black p,
+.mv-hero-green p {
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.mv-hero-black h3,
+.mv-hero-green h3 {
+  font-size: 26px;
+  margin: 0;
+  font-weight: 700;
+}
+
+/* Section title */
+.mv-section-title {
+  margin: 24px 0 16px;
+}
+
+/* Transactions */
+.mv-transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mv-txn-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Left side */
+.mv-txn-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mv-txn-icon {
+  background: #f2f2f6;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.mv-txn-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.mv-txn-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.mv-txn-meta {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Right side */
+.mv-txn-right {
+  display: flex;
+  align-items: center;
+}
+
+.mv-txn-amount {
+  font-weight: 700;
+}

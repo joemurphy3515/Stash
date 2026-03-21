@@ -127,7 +127,7 @@
 .savings-form-container {
   max-width: 500px;
   margin: 0 auto;
-  padding: 0 20px 20px 20px;
+  padding: 0;
   position: relative;
   height: auto;
 }
@@ -136,7 +136,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
+  padding: 0;
+  margin: 0 0 20px 0
 }
 
 .cancel-btn {
@@ -230,7 +231,7 @@
   width: 100%;
   max-width: 500px;
   border-radius: 30px;
-  padding-bottom: 20px;
+  padding: 25px;
   animation: fadeInScale 0.3s ease-out;
   height: auto;
   max-height: 90vh;
@@ -263,6 +264,12 @@
   gap: 8px;
 }
 
+.form-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+}
+
 .mini-input label {
   font-size: 10px;
   text-transform: uppercase;
@@ -291,7 +298,7 @@
 .save-changes-btn-compact {
   font-family: "Montserrat";
   width: calc(100% - 40px);
-  margin: 20px;
+  margin: 0;
   background: #000;
   color: #fff;
   border: none;
