@@ -29,23 +29,39 @@ export const importTransactions = async (file: File): Promise<void> => {
 
     return new Promise((resolve, reject) => {
         Papa.parse(file, {
-            header: false, 
+            header: false,
+            skipEmptyLines: true,
             complete: async (results) => {
                 try {
                     const batch = writeBatch(db);
                     const txnsRef = collection(db, "transactions");
 
                     results.data.forEach((row: any) => {
-                        if (row[0] && row[1]) {
-                            const newDocRef = doc(txnsRef);
-                            batch.set(newDocRef, {
-                                userId: user.uid,
-                                date: row[0],       
-                                description: row[1], 
-                                amount: parseFloat(row[2].replace(/[^0-9.-]+/g, "")), 
-                                category: row[3],    
-                                dateAdded: serverTimestamp(),
-                            });
+                        const isHeader = String(row[0]).toLowerCase().includes("date");
+                        if (isHeader) return;
+
+                        if (row[0] && row[1] && row[2]) {
+                            // clean Description
+                            // look for "DEBIT CARD" or "DEBIT CARD PURCHASE" 
+                            // followed by any amount of 'x's and numbers
+                            let cleanDescription = String(row[1])
+                                .replace(/DEBIT CARD (PURCHASE )?x+[0-9]+/gi, "")
+                                .trim();
+
+                            const rawAmount = String(row[2]).replace(/[^0-9.-]+/g, "");
+                            const parsedAmount = parseFloat(rawAmount);
+
+                            if (!isNaN(parsedAmount)) {
+                                const newDocRef = doc(txnsRef);
+                                batch.set(newDocRef, {
+                                    userId: user.uid,
+                                    date: row[0],
+                                    description: cleanDescription,
+                                    amount: parsedAmount,
+                                    category: row[3] || "Uncategorized",
+                                    dateAdded: serverTimestamp(),
+                                });
+                            }
                         }
                     });
 
