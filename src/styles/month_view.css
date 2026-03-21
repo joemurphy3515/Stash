@@ -140,7 +140,7 @@
 .mv-transaction-card {
   display: flex;
   align-items: center;
-  margin: 5px 0 5px 0;
+  margin: 5px 0 10px 0;
   background: white;
   padding: 13px;
   border-radius: 15px;
