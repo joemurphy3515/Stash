@@ -1,14 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   importTransactions,
-  deleteAllTransactions,
-  getTotalSpent,
-  getTotalEarned,
+  deleteMonthTransactions,
   type Transaction,
 } from "../services/TransactionsService";
 import { db, auth } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import "../styles/month_view.css";
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export const MonthView = ({
   monthName,
@@ -18,9 +31,7 @@ export const MonthView = ({
   onBack: () => void;
 }) => {
   const [activeTab, setActiveTab] = useState("All");
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [totalSpent, setTotalSpent] = useState(0);
-  const [totalEarned, setTotalEarned] = useState(0);
+  const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
 
   const categories = [
     "All",
@@ -46,36 +57,39 @@ export const MonthView = ({
       const txns = snapshot.docs.map(
         (doc) => ({ id: doc.id, ...doc.data() }) as Transaction,
       );
-      setTransactions(txns);
+      setAllTransactions(txns);
     });
 
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    const fetchTotals = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+  const monthlyTransactions = useMemo(() => {
+    return allTransactions.filter((t) => {
+      const parts = t.date.split("/");
+      if (parts.length !== 3) return false;
 
-      try {
-        const [spent, earned] = await Promise.all([
-          getTotalSpent(user.uid),
-          getTotalEarned(user.uid),
-        ]);
-        setTotalSpent(spent);
-        setTotalEarned(earned);
-      } catch (err) {
-        console.error("Error fetching totals:", err);
-      }
-    };
+      const mIndex = parseInt(parts[0]) - 1;
+      const yStr = parts[2].length === 2 ? `20${parts[2]}` : parts[2];
 
-    fetchTotals();
-  }, [transactions]);
+      const tMonthFull = `${monthNames[mIndex]} ${yStr}`;
+      return tMonthFull === monthName;
+    });
+  }, [allTransactions, monthName]);
+
+  const totalEarned = monthlyTransactions
+    .filter((t) => t.category === "Income")
+    .reduce((acc, t) => acc + (Number(t.amount) || 0), 0);
+
+  const totalSpent = Math.abs(
+    monthlyTransactions
+      .filter((t) => t.category !== "Income")
+      .reduce((acc, t) => acc + (Number(t.amount) || 0), 0),
+  );
 
   const filteredTransactions =
     activeTab === "All"
-      ? transactions
-      : transactions.filter((t) => t.category === activeTab);
+      ? monthlyTransactions
+      : monthlyTransactions.filter((t) => t.category === activeTab);
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -100,9 +114,12 @@ export const MonthView = ({
           </label>
           <button
             className="mv-delete-all-btn"
-            onClick={() =>
-              confirm("Clear all data?") && deleteAllTransactions()
-            }
+            onClick={() => {
+              const user = auth.currentUser;
+              if (user && confirm(`Clear all data for ${monthName}?`)) {
+                deleteMonthTransactions(user.uid, monthName);
+              }
+            }}
           >
             Delete All
           </button>
@@ -139,9 +156,9 @@ export const MonthView = ({
         {categories
           .filter((c) => c !== "All" && c !== "Income")
           .map((cat) => {
-            const catTotal = transactions
+            const catTotal = monthlyTransactions
               .filter((t) => t.category === cat)
-              .reduce((acc, t) => acc + t.amount, 0);
+              .reduce((acc, t) => acc + (Number(t.amount) || 0), 0);
 
             return (
               <div key={cat} className="mv-category-row">
@@ -188,9 +205,7 @@ export const MonthView = ({
             </div>
           ))
         ) : (
-          <p className="mv-empty-state">
-            No transactions found. Import a CSV to get started.
-          </p>
+          <p className="mv-empty-state">No transactions for {monthName}.</p>
         )}
       </div>
     </div>
