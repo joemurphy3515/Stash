@@ -192,3 +192,43 @@
 .back-btn:active {
   background: #d1d1d6;
 }
+
+.budget-chart-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 40px 0 0 0;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.chart-header {
+  margin-bottom: 20px;
+}
+
+.chart-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-icon {
+  color: #000;
+}
+
+.chart-content {
+  margin-left: -10px;
+}
+
+.recharts-tooltip-label {
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #000;
+}
+
+.overview-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}

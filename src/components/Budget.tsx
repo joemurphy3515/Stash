@@ -1,7 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { auth } from "../firebase";
 import { getYearlyBudgetOverview } from "../services/BudgetService";
 import { MonthView } from "../components/MonthView";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import "../styles/budget.css";
 import { Calendar } from "lucide-react";
 
@@ -39,6 +48,13 @@ export const Budget = () => {
 
     fetchBudget();
   }, [selectedYear, activeMonth]);
+
+  const chartData = useMemo(() => {
+    return monthNames.map((name) => ({
+      name: name.substring(0, 3), 
+      total: monthlyData[`${name} ${selectedYear}`] || 0,
+    }));
+  }, [monthlyData, selectedYear]);
 
   const fullYearData = monthNames.map((name) => {
     const monthYear = `${name} ${selectedYear}`;
@@ -106,6 +122,63 @@ export const Budget = () => {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      <div className="budget-chart-card">
+        <div className="chart-header">
+          <div className="chart-title-group">
+            <h3 className="overview-title">Spending Trend</h3>
+          </div>
+        </div>
+
+        <div className="chart-content" style={{ width: "100%", height: 220 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={chartData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#f0f0f0"
+              />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 11, fill: "#999", fontWeight: 500 }}
+                dy={10}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 11, fill: "#999" }}
+              />
+              <Tooltip
+                cursor={{ stroke: "#f0f0f0", strokeWidth: 2 }}
+                contentStyle={{
+                  borderRadius: "12px",
+                  border: "none",
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.08)",
+                  padding: "10px",
+                }}
+                formatter={(value: any) => {
+                  const numValue = Number(value) || 0;
+                  return [`$${numValue.toLocaleString()}`, "Spent"];
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="total"
+                stroke="#000000"
+                strokeWidth={3}
+                dot={{ r: 4, fill: "#000", strokeWidth: 2, stroke: "#fff" }}
+                activeDot={{ r: 6, strokeWidth: 0 }}
+                animationDuration={1500}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>
