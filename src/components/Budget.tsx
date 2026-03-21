@@ -1,16 +1,8 @@
-import { useState } from "react";
-import "../styles/budget.css";
+import { useState, useEffect } from "react";
+import { auth } from "../firebase";
+import { getYearlyBudgetOverview } from "../services/BudgetService";
 import { MonthView } from "../components/MonthView";
-
-const budgetData: Record<number, { month: string; total: number }[]> = {
-  2026: [
-    { month: "January 2026", total: 6276.69 },
-    { month: "February 2026", total: 7550.09 },
-    { month: "March 2026", total: 1530.36 },
-  ],
-  2027: [],
-  2028: [],
-};
+import "../styles/budget.css";
 
 const monthNames = [
   "January",
@@ -30,13 +22,29 @@ const monthNames = [
 export const Budget = () => {
   const [selectedYear, setSelectedYear] = useState(2026);
   const [activeMonth, setActiveMonth] = useState<string | null>(null);
+  const [monthlyData, setMonthlyData] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBudget = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      setLoading(true);
+      const totals = await getYearlyBudgetOverview(user.uid, selectedYear);
+      setMonthlyData(totals);
+      setLoading(false);
+    };
+
+    fetchBudget();
+  }, [selectedYear, activeMonth]); 
 
   const fullYearData = monthNames.map((name) => {
     const monthYear = `${name} ${selectedYear}`;
-    const existing = budgetData[selectedYear]?.find(
-      (d) => d.month === monthYear,
-    );
-    return existing || { month: monthYear, total: 0.0 };
+    return {
+      month: monthYear,
+      total: monthlyData[monthYear] || 0.0,
+    };
   });
 
   if (activeMonth) {
@@ -64,7 +72,9 @@ export const Budget = () => {
       </div>
 
       <div className="overview-list">
-        <h3 className="overview-title">{selectedYear} Overview</h3>
+        <h3 className="overview-title">
+          {selectedYear} Overview {loading && "..."}
+        </h3>
 
         <div className="months-grid">
           {fullYearData.map((item) => (
@@ -75,12 +85,10 @@ export const Budget = () => {
             >
               <div className="month-card-left">
                 <span className="calendar-icon">🗓️</span>
-
                 <div className="month-card-content">
                   <div className="month-card-name">
                     {item.month.replace(` ${selectedYear}`, "")}
                   </div>
-
                   <div className="month-card-amount">
                     $
                     {item.total.toLocaleString(undefined, {
@@ -89,7 +97,6 @@ export const Budget = () => {
                   </div>
                 </div>
               </div>
-
               <span className="chevron">›</span>
             </div>
           ))}
