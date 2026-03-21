@@ -45,7 +45,6 @@ export const MonthView = ({
 
   const getCategoryIcon = (category: string) => {
     const props = { size: 18, strokeWidth: 2, className: "mv-category-icon" };
-
     switch (category) {
       case "Rent":
         return <Home {...props} />;
@@ -65,17 +64,6 @@ export const MonthView = ({
         return <DollarSign {...props} />;
     }
   };
-
-  const categories = [
-    "All",
-    "Income",
-    "Rent",
-    "Restaurants",
-    "Credit Card",
-    "Food",
-    "Subscriptions",
-    "Gas",
-  ];
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -100,14 +88,25 @@ export const MonthView = ({
     return allTransactions.filter((t) => {
       const parts = t.date.split("/");
       if (parts.length !== 3) return false;
-
       const mIndex = parseInt(parts[0]) - 1;
       const yStr = parts[2].length === 2 ? `20${parts[2]}` : parts[2];
-
-      const tMonthFull = `${monthNames[mIndex]} ${yStr}`;
-      return tMonthFull === monthName;
+      return `${monthNames[mIndex]} ${yStr}` === monthName;
     });
   }, [allTransactions, monthName]);
+
+  const dynamicCategories = useMemo(() => {
+    const unique = Array.from(
+      new Set(monthlyTransactions.map((t) => t.category)),
+    )
+      .filter(Boolean)
+      .sort();
+    return unique;
+  }, [monthlyTransactions]);
+
+  const tabList = useMemo(
+    () => ["All", ...dynamicCategories],
+    [dynamicCategories],
+  );
 
   const totalEarned = monthlyTransactions
     .filter((t) => t.category === "Income")
@@ -166,10 +165,7 @@ export const MonthView = ({
           <p>Total Spent</p>
           <h3>
             $
-            {totalSpent.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
+            {totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </h3>
         </div>
         <div className="mv-card mv-hero-green">
@@ -178,7 +174,6 @@ export const MonthView = ({
             $
             {totalEarned.toLocaleString(undefined, {
               minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
             })}
           </h3>
         </div>
@@ -186,34 +181,36 @@ export const MonthView = ({
 
       <h3 className="mv-section-title">Category Breakdown</h3>
       <div className="mv-category-scroll-container">
-        {categories
-          .filter((c) => c !== "All" && c !== "Income")
+        {dynamicCategories
+          .filter((cat) => cat !== "Income")
           .map((cat) => {
             const catTotal = monthlyTransactions
               .filter((t) => t.category === cat)
               .reduce((acc, t) => acc + (Number(t.amount) || 0), 0);
 
             return (
-              <div key={cat} className="mv-slim-card">
+              <div
+                key={cat}
+                className={`mv-slim-card ${activeTab === cat ? "active" : ""}`}
+                onClick={() => setActiveTab(cat)}
+              >
                 <div className="mv-icon-wrapper">{getCategoryIcon(cat)}</div>
-                <div className="mv-slim-info">
-                  <span className="mv-slim-label">{cat}</span>
-                  <span className="mv-slim-amount">
-                    $
-                    {Math.abs(catTotal).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                    })}
-                  </span>
-                </div>
+
+                <span className="mv-slim-label">{cat}</span>
+                <span className="mv-slim-amount">
+                  $
+                  {Math.abs(catTotal).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
               </div>
             );
           })}
       </div>
 
       <h3 className="mv-section-title">Transactions</h3>
-
       <div className="mv-filter-scroll">
-        {categories.map((cat) => (
+        {tabList.map((cat) => (
           <button
             key={cat}
             className={`mv-filter-pill ${cat === activeTab ? "active" : ""}`}
