@@ -89,6 +89,11 @@ body {
   cursor: pointer;
 }
 
+.logout-btn:hover {
+  background-color: #262629;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .home-container {
   padding: 40px;
   max-width: 1200px;
