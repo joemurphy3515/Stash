@@ -125,10 +125,18 @@ export const MonthView = ({
   const dynamicCategories = useMemo(() => {
     const unique = Array.from(
       new Set(monthlyTransactions.map((t) => t.category)),
-    )
-      .filter(Boolean)
-      .sort();
-    return unique;
+    ).filter((cat) => cat && cat !== "Income");
+
+    const categoriesWithTotals = unique.map((cat) => {
+      const total = monthlyTransactions
+        .filter((t) => t.category === cat)
+        .reduce((acc, t) => acc + (Number(t.amount) || 0), 0);
+      return { name: cat, total: Math.abs(total) };
+    });
+
+    categoriesWithTotals.sort((a, b) => b.total - a.total);
+
+    return categoriesWithTotals.map((c) => c.name);
   }, [monthlyTransactions]);
 
   const tabList = useMemo(
