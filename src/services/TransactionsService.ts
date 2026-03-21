@@ -2,7 +2,6 @@ import Papa from 'papaparse';
 import { db, auth } from '../firebase';
 import {
     collection,
-    addDoc,
     serverTimestamp,
     getDocs,
     query, where,

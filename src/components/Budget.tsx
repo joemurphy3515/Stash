@@ -3,6 +3,7 @@ import { auth } from "../firebase";
 import { getYearlyBudgetOverview } from "../services/BudgetService";
 import { MonthView } from "../components/MonthView";
 import "../styles/budget.css";
+import { Calendar } from "lucide-react";
 
 const monthNames = [
   "January",
@@ -37,7 +38,7 @@ export const Budget = () => {
     };
 
     fetchBudget();
-  }, [selectedYear, activeMonth]); 
+  }, [selectedYear, activeMonth]);
 
   const fullYearData = monthNames.map((name) => {
     const monthYear = `${name} ${selectedYear}`;
@@ -80,24 +81,29 @@ export const Budget = () => {
           {fullYearData.map((item) => (
             <div
               key={item.month}
-              className="budget-card month-card"
+              className="month-card"
               onClick={() => setActiveMonth(item.month)}
             >
-              <div className="month-card-left">
-                <span className="calendar-icon">🗓️</span>
-                <div className="month-card-content">
+              <div className="month-card-row">
+                <div className="month-group">
+                  <div className="calendar-icon">
+                    <Calendar size={14} strokeWidth={2.5} />
+                  </div>
                   <div className="month-card-name">
                     {item.month.replace(` ${selectedYear}`, "")}
                   </div>
+                </div>
+
+                <div className="amount-group">
                   <div className="month-card-amount">
                     $
                     {item.total.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                   </div>
+                  <div className="chevron">›</div>
                 </div>
               </div>
-              <span className="chevron">›</span>
             </div>
           ))}
         </div>
