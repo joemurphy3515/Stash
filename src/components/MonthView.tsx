@@ -1,4 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  importTransactions,
+  deleteAllTransactions,
+  getTotalSpent,
+  getTotalEarned,
+  type Transaction,
+} from "../services/TransactionsService";
+import { db, auth } from "../firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import "../styles/month_view.css";
 
 export const MonthView = ({
@@ -9,9 +18,13 @@ export const MonthView = ({
   onBack: () => void;
 }) => {
   const [activeTab, setActiveTab] = useState("All");
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [totalSpent, setTotalSpent] = useState(0);
+  const [totalEarned, setTotalEarned] = useState(0);
 
   const categories = [
     "All",
+    "Income",
     "Rent",
     "Restaurants",
     "Credit Card",
@@ -20,13 +33,128 @@ export const MonthView = ({
     "Gas",
   ];
 
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const q = query(
+      collection(db, "transactions"),
+      where("userId", "==", user.uid),
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const txns = snapshot.docs.map(
+        (doc) => ({ id: doc.id, ...doc.data() }) as Transaction,
+      );
+      setTransactions(txns);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const fetchTotals = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      try {
+        const [spent, earned] = await Promise.all([
+          getTotalSpent(user.uid),
+          getTotalEarned(user.uid),
+        ]);
+        setTotalSpent(spent);
+        setTotalEarned(earned);
+      } catch (err) {
+        console.error("Error fetching totals:", err);
+      }
+    };
+
+    fetchTotals();
+  }, [transactions]);
+
+  const filteredTransactions =
+    activeTab === "All"
+      ? transactions
+      : transactions.filter((t) => t.category === activeTab);
+
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      try {
+        await importTransactions(e.target.files[0]);
+      } catch (err) {
+        console.error("Import failed", err);
+      }
+    }
+  };
+
   return (
     <div className="mv-container">
-      <button className="mv-back-btn" onClick={onBack}>
-        ‹
-      </button>
+      <div className="mv-header-actions">
+        <button className="mv-back-btn" onClick={onBack}>
+          ‹
+        </button>
+        <div className="mv-action-btns">
+          <label className="mv-import-label">
+            Import
+            <input type="file" accept=".csv" onChange={handleImport} hidden />
+          </label>
+          <button
+            className="mv-delete-all-btn"
+            onClick={() =>
+              confirm("Clear all data?") && deleteAllTransactions()
+            }
+          >
+            Delete All
+          </button>
+        </div>
+      </div>
 
       <h2 className="mv-title">{monthName}</h2>
+
+      <div className="mv-hero-grid">
+        <div className="mv-card mv-hero-black">
+          <p>Total Spent</p>
+          <h3>
+            $
+            {totalSpent.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </h3>
+        </div>
+        <div className="mv-card mv-hero-green">
+          <p>Total Earned</p>
+          <h3>
+            $
+            {totalEarned.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </h3>
+        </div>
+      </div>
+
+      <h3 className="mv-section-title">Category Breakdown</h3>
+      <div className="mv-category-list">
+        {categories
+          .filter((c) => c !== "All" && c !== "Income")
+          .map((cat) => {
+            const catTotal = transactions
+              .filter((t) => t.category === cat)
+              .reduce((acc, t) => acc + t.amount, 0);
+
+            return (
+              <div key={cat} className="mv-category-row">
+                <span>{cat}</span>
+                <span className="mv-cat-amount">
+                  ${Math.abs(catTotal).toFixed(2)}
+                </span>
+              </div>
+            );
+          })}
+      </div>
+
+      <h3 className="mv-section-title">Transactions</h3>
 
       <div className="mv-filter-scroll">
         {categories.map((cat) => (
@@ -40,33 +168,30 @@ export const MonthView = ({
         ))}
       </div>
 
-      <div className="mv-hero-grid">
-        <div className="mv-card mv-hero-black">
-          <p>Total Spent</p>
-          <h3>$6,276.69</h3>
-        </div>
-        <div className="mv-card mv-hero-green">
-          <p>Total Earned</p>
-          <h3>$5,998.36</h3>
-        </div>
-      </div>
-
-      <h3 className="mv-section-title">Category Breakdown</h3>
-
-      {/*include blocks of categories and total amount spent for each category*/}
-
-      <h3 className="mv-section-title">Transactions</h3>
-
       <div className="transactions-list">
-        <div className="mv-transaction-card">
-          <div className="mv-txn-left">
-            <div className="mv-txn-name">Description Goes Here</div>
-            <div className="mv-txn-category">Category Name</div>
-          </div>
-          <div className="mv-txn-right">
-            <span className="mv-txn-amount">$0.00</span>
-          </div>
-        </div>
+        {filteredTransactions.length > 0 ? (
+          filteredTransactions.map((txn) => (
+            <div key={txn.id} className="mv-transaction-card">
+              <div className="mv-txn-left">
+                <div className="mv-txn-name">{txn.description}</div>
+                <div className="mv-txn-category">
+                  {txn.category} • {txn.date}
+                </div>
+              </div>
+              <div className="mv-txn-right">
+                <span
+                  className={`mv-txn-amount ${txn.amount < 0 ? "neg" : "pos"}`}
+                >
+                  {txn.amount < 0 ? "-" : ""}${Math.abs(txn.amount).toFixed(2)}
+                </span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="mv-empty-state">
+            No transactions found. Import a CSV to get started.
+          </p>
+        )}
       </div>
     </div>
   );

@@ -146,3 +146,32 @@
   border-radius: 15px;
   justify-content: space-between;
 }
+
+.mv-action-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.mv-import-label {
+  background: #3f77f9;
+  font-size: 14px;
+  color: white;
+  font-weight: 600;
+  padding: 10px 20px 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.mv-delete-all-btn {
+  background: #f93f3f;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px 10px 20px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  font-family: "Montserrat";
+  cursor: pointer;
+}
