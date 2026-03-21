@@ -198,14 +198,14 @@ export const MonthView = ({
 
       <div className="mv-hero-grid">
         <div className="mv-card mv-hero-black">
-          <p>Total Spent</p>
+          <p className='mv-hero-label'>Total Spent</p>
           <h3>
             $
             {totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </h3>
         </div>
         <div className="mv-card mv-hero-green">
-          <p>Total Earned</p>
+          <p className='mv-hero-label'>Total Earned</p>
           <h3>
             $
             {totalEarned.toLocaleString(undefined, {

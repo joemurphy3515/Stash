@@ -119,6 +119,10 @@
 }
 
 .mv-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   border-radius: 16px;
   padding: 20px;
   box-shadow: var(--shadow);
@@ -132,6 +136,10 @@
 .mv-hero-green {
   background: #34c759;
   color: #fff;
+}
+
+.mv-hero-label {
+  font-weight: 500;
 }
 
 .mv-hero-black p,
