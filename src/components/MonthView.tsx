@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Transactions } from "./Transactions";
 import "../styles/month_view.css";
 
 export const MonthView = ({
@@ -54,7 +53,21 @@ export const MonthView = ({
 
       <h3 className="mv-section-title">Category Breakdown</h3>
 
-      <Transactions filterCategory={activeTab} />
+      {/*include blocks of categories and total amount spent for each category*/}
+
+      <h3 className="mv-section-title">Transactions</h3>
+
+      <div className="transactions-list">
+        <div className="mv-transaction-card">
+          <div className="mv-txn-left">
+            <div className="mv-txn-name">Description Goes Here</div>
+            <div className="mv-txn-category">Category Name</div>
+          </div>
+          <div className="mv-txn-right">
+            <span className="mv-txn-amount">$0.00</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
