@@ -5,6 +5,7 @@ import { MonthlyReview } from "./MonthlyReview";
 import { Savings } from "./Savings";
 import { Budget } from "./Budget";
 import "../styles/home.css";
+import appIcon from "../assets/stash-web-icon.avif";
 
 interface HomeProps {
   user: User;
@@ -42,7 +43,10 @@ const Home = ({ user }: HomeProps) => {
     <div className="home-wrapper">
       <nav className="top-toolbar">
         <div className="toolbar-content">
-          <span className="logo-text">Stash</span>
+          <div className='toolbar-left'>
+            <img className="toolbar-logo" src={appIcon} alt="Stash Logo" />
+            <h1 className="logo-text">Stash</h1>
+          </div>
           <div className="toolbar-right">
             <div className="user-avatar">{initials}</div>
             <button className="logout-btn" onClick={handleLogout}>
