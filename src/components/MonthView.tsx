@@ -12,10 +12,18 @@ import {
   Utensils,
   CreditCard,
   ShoppingBag,
-  Tv,
+  ShoppingCart,
+  HeartPlus,
+  Store,
+  CalendarSync,
+  Dice5,
   Fuel,
-  Package,
   DollarSign,
+  Car,
+  Phone,
+  Cable,
+  Zap,
+  Popcorn,
 } from "lucide-react";
 
 const monthNames = [
@@ -49,17 +57,37 @@ export const MonthView = ({
       case "Rent":
         return <Home {...props} />;
       case "Restaurants":
-        return <Utensils {...props} />;
+        return <Store {...props} />;
       case "Credit Card":
         return <CreditCard {...props} />;
       case "Food":
-        return <ShoppingBag {...props} />;
+        return <Utensils {...props} />;
       case "Subscriptions":
-        return <Tv {...props} />;
+        return <CalendarSync {...props} />;
       case "Gas":
         return <Fuel {...props} />;
       case "Uncategorized":
-        return <Package {...props} />;
+        return <Dice5 {...props} />;
+      case "Groceries":
+        return <ShoppingCart {...props} />;
+      case "Healthcare":
+        return <HeartPlus {...props} />;
+      case "Car Loan":
+        return <Car {...props} />;
+      case "Car Insurance":
+        return <Car {...props} />;
+      case "Free Spend":
+        return <ShoppingBag {...props} />;
+      case "One-Off":
+        return <Dice5 {...props} />;
+      case "Verizon":
+        return <Phone {...props} />;
+      case "AT&T":
+        return <Cable {...props} />;
+      case "DTE":
+        return <Zap {...props} />;
+      case "Entertainment":
+        return <Popcorn {...props} />;
       default:
         return <DollarSign {...props} />;
     }
