@@ -168,7 +168,7 @@ export const MonthView = ({
         ))}
       </div>
 
-      <div className="transactions-list">
+      <div className="mv-transactions-list">
         {filteredTransactions.length > 0 ? (
           filteredTransactions.map((txn) => (
             <div key={txn.id} className="mv-transaction-card">
