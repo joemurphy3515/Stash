@@ -1,4 +1,4 @@
-# Stash | Personal Finance for Founders
+# Stash | Spending & Budget Tracking
 
 **Stash** is a high-performance spending and budget tracker designed to solve the persistent failures of mainstream finance apps. By leveraging AI integrations, Stash eliminates the frustration of incorrect categorization and replaces cluttered legacy interfaces with a clean, iOS-inspired experience.
 
