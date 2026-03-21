@@ -7,6 +7,16 @@ import {
 import { db, auth } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import "../styles/month_view.css";
+import {
+  Home,
+  Utensils,
+  CreditCard,
+  ShoppingBag,
+  Tv,
+  Fuel,
+  Package,
+  DollarSign,
+} from "lucide-react";
 
 const monthNames = [
   "January",
@@ -32,6 +42,29 @@ export const MonthView = ({
 }) => {
   const [activeTab, setActiveTab] = useState("All");
   const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
+
+  const getCategoryIcon = (category: string) => {
+    const props = { size: 18, strokeWidth: 2, className: "mv-category-icon" };
+
+    switch (category) {
+      case "Rent":
+        return <Home {...props} />;
+      case "Restaurants":
+        return <Utensils {...props} />;
+      case "Credit Card":
+        return <CreditCard {...props} />;
+      case "Food":
+        return <ShoppingBag {...props} />;
+      case "Subscriptions":
+        return <Tv {...props} />;
+      case "Gas":
+        return <Fuel {...props} />;
+      case "Uncategorized":
+        return <Package {...props} />;
+      default:
+        return <DollarSign {...props} />;
+    }
+  };
 
   const categories = [
     "All",
@@ -152,7 +185,7 @@ export const MonthView = ({
       </div>
 
       <h3 className="mv-section-title">Category Breakdown</h3>
-      <div className="mv-category-list">
+      <div className="mv-category-scroll-container">
         {categories
           .filter((c) => c !== "All" && c !== "Income")
           .map((cat) => {
@@ -161,11 +194,17 @@ export const MonthView = ({
               .reduce((acc, t) => acc + (Number(t.amount) || 0), 0);
 
             return (
-              <div key={cat} className="mv-category-row">
-                <span>{cat}</span>
-                <span className="mv-cat-amount">
-                  ${Math.abs(catTotal).toFixed(2)}
-                </span>
+              <div key={cat} className="mv-slim-card">
+                <div className="mv-icon-wrapper">{getCategoryIcon(cat)}</div>
+                <div className="mv-slim-info">
+                  <span className="mv-slim-label">{cat}</span>
+                  <span className="mv-slim-amount">
+                    $
+                    {Math.abs(catTotal).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
               </div>
             );
           })}
