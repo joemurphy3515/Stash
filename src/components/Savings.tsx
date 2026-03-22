@@ -8,8 +8,9 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { SavingsForm } from "../components/SavingsForm";
-import { SAVINGS_ACCOUNTS } from "../services/SavingsService";
+import { SAVINGS_ACCOUNTS, SavingsService } from "../services/SavingsService";
 import "../styles/savings.css";
+import { CalendarDaysIcon, ChartNoAxesCombined } from "lucide-react";
 
 const GOAL_CONFIG = {
   business: {
@@ -36,6 +37,28 @@ export const Savings = () => {
   const [currentData, setCurrentData] = useState<Record<number, number>>({});
   const [goals, setGoals] = useState<any[]>([]);
   const [totalSavings, setTotalSavings] = useState(0);
+  const [savedThisMonth, setSavedThisMonth] = useState(0);
+  const [avgSaved, setAvgSaved] = useState(0);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const personalId = SAVINGS_ACCOUNTS.PERSONAL;
+
+      try {
+        const [monthly, average] = await Promise.all([
+          SavingsService.fetchAmountSavedCurrentMonth(personalId),
+          SavingsService.fetchAverageSavedPerMonth(personalId),
+        ]);
+
+        setSavedThisMonth(monthly || 0);
+        setAvgSaved(average || 0);
+      } catch (err) {
+        console.error("Error fetching savings stats:", err);
+      }
+    };
+
+    fetchStats();
+  }, [currentData]);
 
   useEffect(() => {
     let unsubGoals: () => void;
@@ -117,16 +140,27 @@ export const Savings = () => {
       </div>
       <div className="stats-grid">
         <div className="savings-card stat-card">
-          <span className="icon-bg house">🏠</span>
+          <CalendarDaysIcon style={{color: "#2d6bdc"}} />
           <div className="stat-content">
-            <span className="stat-value">$0</span>
+            <span className="stat-value">
+              $
+              {savedThisMonth.toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+              })}
+            </span>
             <span className="stat-label">Saved This Month</span>
           </div>
         </div>
         <div className="savings-card stat-card">
-          <span className="icon-bg chart">📈</span>
+          <ChartNoAxesCombined style={{ color: "#0fac17" }} />
           <div className="stat-content">
-            <span className="stat-value">$0</span>
+            <span className="stat-value">
+              $
+              {avgSaved.toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}
+            </span>
             <span className="stat-label">Avg / Month</span>
           </div>
         </div>

@@ -107,5 +107,72 @@ export const SavingsService = {
             console.error("Batch update failed:", error);
             throw error;
         }
+    },
+
+    fetchAmountSavedCurrentMonth: async (accountId: number) => {
+        const user = auth.currentUser;
+        if (!user) return 0;
+
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        const q = query(
+            collection(db, "savings"),
+            where("userId", "==", user.uid),
+            where("savingsAccountId", "==", accountId),
+            where("dateUpdated", ">=", startOfMonth),
+            orderBy("dateUpdated", "asc")
+        );
+
+        const snap = await getDocs(q);
+        if (snap.empty) return 0;
+
+        const records = snap.docs.map(d => d.data());
+        let totalSavedThisMonth = 0;
+
+        for (let i = 1; i < records.length; i++) {
+            const currentAmount = records[i].amount;
+            const previousAmount = records[i - 1].amount;
+
+            if (currentAmount > previousAmount) {
+                totalSavedThisMonth += (currentAmount - previousAmount);
+            }
+        }
+
+        return totalSavedThisMonth;
+    },
+
+    fetchAverageSavedPerMonth: async (accountId: number) => {
+        const user = auth.currentUser;
+        if (!user) return 0;
+
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+        const q = query(
+            collection(db, "savings"),
+            where("userId", "==", user.uid),
+            where("savingsAccountId", "==", accountId),
+            where("dateUpdated", ">=", thirtyDaysAgo),
+            orderBy("dateUpdated", "asc")
+        );
+
+        const snap = await getDocs(q);
+        if (snap.empty) return 0;
+
+        const records = snap.docs.map(d => d.data());
+        let totalIncrements = 0;
+        let incrementCount = 0;
+
+        for (let i = 1; i < records.length; i++) {
+            const diff = records[i].amount - records[i - 1].amount;
+            if (diff > 0) {
+                totalIncrements += diff;
+                incrementCount++;
+            }
+        }
+
+        return incrementCount > 0 ? totalIncrements / incrementCount : 0;
     }
-};
+
+}
