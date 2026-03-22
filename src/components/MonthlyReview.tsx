@@ -1,11 +1,5 @@
 import "../styles/monthly_review.css";
 
-const data = [
-  { label: "Food", amount: 490.43, icon: "🍴" },
-  { label: "Fun", amount: 490.43, icon: "🎉" },
-  { label: "Restaurants", amount: 490.43, icon: "🍱" },
-  { label: "Subscriptions", amount: 490.43, icon: "💳" },
-];
 
 export const MonthlyReview = () => {
   const totalSpent = 1530.36;
@@ -30,20 +24,6 @@ export const MonthlyReview = () => {
           <span>${remaining.toLocaleString()} remaining</span>
           <span>{progress}%</span>
         </div>
-      </div>
-
-      <h3 className="section-title">Monthly Breakdown</h3>
-
-      <div className="category-grid">
-        {data.map((item) => (
-          <div key={item.label} className="category-card">
-            <span className="category-icon">{item.icon}</span>
-            <span className="category-label">{item.label}</span>
-            <span className="category-amount">
-              ${item.amount.toLocaleString()}
-            </span>
-          </div>
-        ))}
       </div>
     </div>
   );
