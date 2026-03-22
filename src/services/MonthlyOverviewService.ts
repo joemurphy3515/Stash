@@ -68,5 +68,40 @@ export const MonthlyOverviewService = {
         } else {
             await addDoc(budgetsRef, budgetData);
         }
-    }
+    },
+
+    getCategoryGroupSpending: async (userId: string) => {
+        const txnsRef = collection(db, "transactions");
+        const q = query(txnsRef, where("userId", "==", userId));
+        const snap = await getDocs(q);
+
+        const now = new Date();
+        const currentMonth = now.getMonth() + 1;
+        const currentYearShort = now.getFullYear().toString().slice(-2);
+
+        let foodTotal = 0;
+        let pleasureTotal = 0;
+
+        const foodCategories = ["Food", "Restaurants"];
+        const pleasureCategories = ["One-Off", "Entertainment", "Free Spend"];
+
+        snap.forEach(doc => {
+            const data = doc.data();
+            const dateStr = data.date;
+            if (dateStr) {
+                const [m, , y] = dateStr.split('/');
+                if (parseInt(m) === currentMonth && y === currentYearShort) {
+                    const amount = Math.abs(Number(data.amount) || 0);
+
+                    if (foodCategories.includes(data.category)) {
+                        foodTotal += amount;
+                    } else if (pleasureCategories.includes(data.category)) {
+                        pleasureTotal += amount;
+                    }
+                }
+            }
+        });
+
+        return { foodTotal, pleasureTotal };
+    },
 };

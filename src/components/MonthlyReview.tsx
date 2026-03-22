@@ -5,16 +5,13 @@ import { auth } from "../firebase";
 import "../styles/monthly_review.css";
 import { Utensils, Popcorn } from "lucide-react";
 
-
 export const MonthlyReview = () => {
   const [showModal, setShowModal] = useState(false);
   const [totalSpent, setTotalSpent] = useState(0);
   const [targetIncome, setTargetIncome] = useState(0);
   const [budgetLimits, setBudgetLimits] = useState({ food: 0, pleasure: 0 });
+  const [currentSpend, setCurrentSpend] = useState({ food: 0, pleasure: 0 });
   const [loading, setLoading] = useState(true);
-
-  const foodCurrent = 0;
-  const pleasureCurrent = 0;
 
   const fetchData = async () => {
     const user = auth.currentUser;
@@ -22,12 +19,18 @@ export const MonthlyReview = () => {
 
     setLoading(true);
     try {
-      const [spent, budget] = await Promise.all([
+      const [spent, budget, groupSpend] = await Promise.all([
         MonthlyOverviewService.getCurrentMonthSpending(user.uid),
         MonthlyOverviewService.getMonthlyBudget(user.uid),
+        MonthlyOverviewService.getCategoryGroupSpending(user.uid),
       ]);
 
       setTotalSpent(spent);
+      setCurrentSpend({
+        food: groupSpend.foodTotal,
+        pleasure: groupSpend.pleasureTotal,
+      });
+
       if (budget) {
         setTargetIncome(budget.totalEarned || 0);
         setBudgetLimits({
@@ -52,6 +55,22 @@ export const MonthlyReview = () => {
 
   const getProgress = (current: number, limit: number) =>
     limit > 0 ? Math.min((current / limit) * 100, 100) : 0;
+
+  const renderLimitFooter = (current: number, limit: number) => {
+    const isOver = current > limit;
+    const diff = current - limit;
+
+    return (
+      <div className="limit-footer">
+        {isOver ? (
+          <span className="over-text">-${diff.toFixed(2)} over</span>
+        ) : (
+          <span>${current.toLocaleString()} spent</span>
+        )}
+        <span>${limit.toLocaleString()}</span>
+      </div>
+    );
+  };
 
   return (
     <div className="monthly-container">
@@ -91,16 +110,13 @@ export const MonthlyReview = () => {
           </div>
           <div className="limit-bar-container">
             <div
-              className="limit-bar-fill food"
+              className={`limit-bar-fill food ${currentSpend.food > budgetLimits.food ? "danger" : ""}`}
               style={{
-                width: `${getProgress(foodCurrent, budgetLimits.food)}%`,
+                width: `${getProgress(currentSpend.food, budgetLimits.food)}%`,
               }}
             ></div>
           </div>
-          <div className="limit-footer">
-            <span>${foodCurrent} spent</span>
-            <span>${budgetLimits.food}</span>
-          </div>
+          {renderLimitFooter(currentSpend.food, budgetLimits.food)}
         </div>
 
         <div className="limit-card">
@@ -112,16 +128,13 @@ export const MonthlyReview = () => {
           </div>
           <div className="limit-bar-container">
             <div
-              className="limit-bar-fill pleasure"
+              className={`limit-bar-fill pleasure ${currentSpend.pleasure > budgetLimits.pleasure ? "danger" : ""}`}
               style={{
-                width: `${getProgress(pleasureCurrent, budgetLimits.pleasure)}%`,
+                width: `${getProgress(currentSpend.pleasure, budgetLimits.pleasure)}%`,
               }}
             ></div>
           </div>
-          <div className="limit-footer">
-            <span>${pleasureCurrent} spent</span>
-            <span>${budgetLimits.pleasure}</span>
-          </div>
+          {renderLimitFooter(currentSpend.pleasure, budgetLimits.pleasure)}
         </div>
       </div>
 
