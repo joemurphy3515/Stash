@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MonthlyOverviewService } from "../services/MonthlyOverviewService";
+import { auth } from "../firebase";
 import "../styles/budget_form.css";
 
 export const BudgetsForm = ({
@@ -15,12 +16,32 @@ export const BudgetsForm = ({
     pleasureSpend: "",
   });
 
+  useEffect(() => {
+    const loadExistingBudget = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const existingBudget = await MonthlyOverviewService.getMonthlyBudget(
+        user.uid,
+      );
+      if (existingBudget) {
+        setFormData({
+          totalEarned: existingBudget.totalEarned?.toString() || "",
+          foodSpend: existingBudget.foodSpend?.toString() || "",
+          pleasureSpend: existingBudget.pleasureSpend?.toString() || "",
+        });
+      }
+    };
+
+    loadExistingBudget();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await MonthlyOverviewService.setMonthlyBudget({
-      totalEarned: Number(formData.totalEarned),
-      foodSpend: Number(formData.foodSpend),
-      pleasureSpend: Number(formData.pleasureSpend),
+      totalEarned: Number(formData.totalEarned) || 0,
+      foodSpend: Number(formData.foodSpend) || 0,
+      pleasureSpend: Number(formData.pleasureSpend) || 0,
     });
     onSuccess();
   };
