@@ -123,7 +123,7 @@ export const Savings = () => {
   return (
     <div className="savings-container">
       <header className="savings-header">
-        <h1>Savings</h1>
+        <h1 className='savings-title'>Savings</h1>
         <button className="update-btn" onClick={() => setShowForm(true)}>
           Update
         </button>

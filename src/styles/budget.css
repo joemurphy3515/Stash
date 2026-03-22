@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+.budget-title {
+  margin: 0 0 20px 0;
+}
+
 .year-switcher {
   background: #e5e5ea;
   padding: 4px;

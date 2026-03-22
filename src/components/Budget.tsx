@@ -73,7 +73,7 @@ export const Budget = () => {
   return (
     <div className="budget-container">
       <header className="budget-header">
-        <h1>Budget</h1>
+        <h1 className='budget-title'>Monthly Spending</h1>
       </header>
 
       <div className="year-switcher">
