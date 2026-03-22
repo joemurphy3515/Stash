@@ -3,7 +3,7 @@ import { BudgetsForm } from "../components/BudgetsForms";
 import { MonthlyOverviewService } from "../services/MonthlyOverviewService";
 import { auth } from "../firebase";
 import "../styles/monthly_review.css";
-import { Utensils, Zap } from "lucide-react";
+import { Utensils, Popcorn } from "lucide-react";
 
 
 export const MonthlyReview = () => {
@@ -85,7 +85,7 @@ export const MonthlyReview = () => {
         <div className="limit-card">
           <div className="limit-header">
             <div className="limit-icon-bg food">
-              <Utensils size={16} color="#f09246" />
+              <Utensils size={16} color="#ef8732" />
             </div>
             <span className="limit-name">Food & Dining</span>
           </div>
@@ -106,7 +106,7 @@ export const MonthlyReview = () => {
         <div className="limit-card">
           <div className="limit-header">
             <div className="limit-icon-bg pleasure">
-              <Zap size={16} color="#9d52ff" />
+              <Popcorn size={16} color="#9d52ff" />
             </div>
             <span className="limit-name">Pleasure</span>
           </div>
