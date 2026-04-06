@@ -1,25 +1,22 @@
 # Stash | Spending & Budget Tracking
 
-**Stash** is a high-performance spending and budget tracker designed to solve the persistent failures of mainstream finance apps. By leveraging AI integrations, Stash eliminates the frustration of incorrect categorization and replaces cluttered legacy interfaces with a clean, iOS-inspired experience.
+**Stash** is a spending and budget tracker designed to solve the persistent failures of mainstream budget tracking apps. By leveraging AI integrations, Stash eliminates the frustration of incorrect categorization and replaces cluttered legacy interfaces with a clean, iOS-inspired experience.
 
 ## 🚀 The Stash Difference
 
-Unlike major financial apps, Stash is built to actually work:
-* **AI-Powered Categorization:** No more manual overrides. Our integration ensures transactions land where they belong the first time.
-* **Founder-Centric UI:** A streamlined, high-contrast dashboard designed for multidisciplinary experts who need insights at a glance.
-* **Precision Budgeting:** Real-time tracking that solves the "lag" and "hidden fees" issues common in other platforms.
+* **AI-Powered Categorization:** No more manual overrides. Transactions are automatically categorized correctly the first time, so you never have to go back and fix them.
+
+* **Effortless Spending Imports:** Import your spending once and you’re done. No cleanup, no recategorizing, just fast, accurate tracking from the start.
+
+* **Clean, Seamless Experience:** A streamlined UI built for speed and clarity, making it easy to navigate, review, and manage your finances without friction.
+
+* **Performance-Driven Tracking:** Lightning-fast imports and real-time updates ensure your data is always current, without lag or delays.
+
+* **Powerful Charts & Insights:** Visualize your budget and spending trends with intuitive charts that make it easy to understand where your money is going.
 
 ## 🛠 Tech Stack
 
-* **Framework:** React 18+
+* **Framework:** React
 * **Language:** TypeScript
 * **Bundler:** Vite
-* **Styling:** Pure CSS (Custom Root Variables & iOS-Standard Hex Codes)
-
-## 📁 Component Architecture
-
-* **Home.tsx**: Executive dashboard with spending vs. remaining progress metrics.
-* **Budget.tsx**: 3-year multi-view controller for high-level and granular analysis.
-* **Savings.tsx**: Milestone-driven goal tracking with visual progress indicators.
-* **MonthView.tsx**: Deep-dive monthly breakdown with seamless horizontal category filtering.
-* **Transactions.tsx**: A reusable, AI-ready transaction list component.
+* **Styling:** CSS (NO Component Framework)
